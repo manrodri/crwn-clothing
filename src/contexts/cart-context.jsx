@@ -9,12 +9,13 @@ export const CartContext = createContext({
 })
 
 const addCartItems = (cartItems, productToAdd) => {
-
     // if item exist return new array with item quantity incremented by one
-    const existingCartItem = cartItems.find((item) => item.id === productToAdd.id )
+    const existingCartItem = cartItems.find((item) => {
+        return item.id === productToAdd.id
+    } )
     if(existingCartItem){
         return cartItems.map((cartItem) => cartItem.id === productToAdd.id ?
-            {...cartItem, quatity: cartItem.quantity + 1} : cartItem
+            {...cartItem, quantity: cartItem.quantity + 1} : cartItem
         )
     }
     // add new item
