@@ -5,8 +5,11 @@ export const CartContext = createContext({
     setIsCartOpen: () => {
     },
     cartItems: [],
-    addItemToCart: () => {}
+    addItemToCart: () => {},
+    itemsCount: 0,
 })
+
+
 
 const addCartItems = (cartItems, productToAdd) => {
     // if item exist return new array with item quantity incremented by one
@@ -27,12 +30,18 @@ const addCartItems = (cartItems, productToAdd) => {
 export const CartProvider = ({children}) => {
     const [isCartOpen, setIsCartOpen] = useState(false)
     const [cartItems, setCartItems] = useState([])
+    const [ itemsCount, setItemsCount ] = useState(0)
 
     const addItemToCart = (productToAdd) => {
         setCartItems(addCartItems(cartItems, productToAdd))
 
 }
-    const value = {isCartOpen, setIsCartOpen, addItemToCart, cartItems}
+    const addToCount = () => {
+        setItemsCount(cartItems.reduce((prev, current) => prev + current, itemsCount) )
+}
+
+
+    const value = {isCartOpen, setIsCartOpen, addItemToCart, cartItems, itemsCount, addToCount}
 
     return (
         <CartContext.Provider value={value}>{children}</CartContext.Provider>
