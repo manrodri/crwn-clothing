@@ -27,6 +27,22 @@ const addCartItems = (cartItems, productToAdd) => {
 }
 
 
+const removeCartItems = (cartItems, productToRemove) => {
+    // if item exist return new array with item quantity decremeneted by one
+    const existingCartItem = cartItems.find((item) => {
+        return item.id === productToRemove.id
+    } )
+    if(existingCartItem){
+        return cartItems.map((cartItem) => cartItem.id === productToRemove.id && cartItem.quantity >= 1 ?
+            {...cartItem, quantity: cartItem.quantity - 1} : cartItem
+        )
+    }
+
+    return [...cartItems]
+}
+
+
+
 export const CartProvider = ({children}) => {
     const [isCartOpen, setIsCartOpen] = useState(false)
     const [cartItems, setCartItems] = useState([])
@@ -37,6 +53,10 @@ export const CartProvider = ({children}) => {
 
 }
 
+    const removeItemFromCart = (productToRemove) => {
+        setCartItems(removeCartItems(cartItems, productToRemove))
+    }
+
     useEffect(() => {
         const newCartCount = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0)
         setCartCount(newCartCount)
@@ -44,7 +64,7 @@ export const CartProvider = ({children}) => {
 
 
 
-    const value = {isCartOpen, setIsCartOpen, addItemToCart, cartItems, cartCount}
+    const value = {isCartOpen, setIsCartOpen, addItemToCart, removeItemFromCart, cartItems, cartCount}
 
     return (
         <CartContext.Provider value={value}>{children}</CartContext.Provider>
