@@ -28,17 +28,19 @@ const addCartItems = (cartItems, productToAdd) => {
 
 
 const removeCartItems = (cartItems, productToRemove) => {
-    // if item exist return new array with item quantity decremeneted by one
+    // find item
     const existingCartItem = cartItems.find((item) => {
         return item.id === productToRemove.id
     } )
-    if(existingCartItem){
-        return cartItems.map((cartItem) => cartItem.id === productToRemove.id && cartItem.quantity >= 1 ?
+    // if item is equal to one remove item form cart
+    if(existingCartItem.quantity === 1){
+        return cartItems.filter(item => item.id !== productToRemove.id)
+    }
+    // return cart items (new array) with reduce quantity
+
+     return cartItems.map((cartItem) => cartItem.id === productToRemove.id ?
             {...cartItem, quantity: cartItem.quantity - 1} : cartItem
         )
-    }
-
-    return [...cartItems]
 }
 
 
